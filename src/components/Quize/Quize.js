@@ -5,7 +5,8 @@ import ActiveQuize from '../../components/ActiveQuize/ActiveQuize'
 class Quize extends React.Component {
   state = {
     activeQuestion: 0,
-    answerState: null, // { [id]: 'success' 'error' }
+    answerState: null,
+    // { [id]: 'success' 'error' }
     quiz: [
       {
         question: 'Какого цвета небо?',
@@ -29,11 +30,37 @@ class Quize extends React.Component {
           { text: '1803', id: 4 },
         ],
       },
+
+      {
+        question: 'Когда всё началось?',
+        rightAnswerId: 1,
+        id: 3,
+        answers: [
+          { text: '2017', id: 1 },
+          { text: '2020', id: 2 },
+          { text: '2016', id: 3 },
+          { text: '2015', id: 4 },
+        ],
+      },
+      {
+        question: 'Как меня зовут?',
+        rightAnswerId: 4,
+        id: 4,
+        answers: [
+          { text: 'Алёна', id: 1 },
+          { text: 'Миша', id: 2 },
+          { text: 'Клава', id: 3 },
+          { text: 'Шарик', id: 4 },
+        ],
+      },
     ],
   }
 
   onAnswerClickHandler = (answerId) => {
-    console.log(this.state.activeQuestion)
+    if (this.setState.answerState) {
+      const key = Object.key(this.state.answerState)[0]
+    }
+
     const question = this.state.quiz[this.state.activeQuestion]
 
     if (question.rightAnswerId === answerId) {
@@ -43,7 +70,7 @@ class Quize extends React.Component {
 
       const timeout = window.setTimeout(() => {
         if (this.isQuizFinished()) {
-          console.log('Finished')
+          // console.log('Finished')
         } else {
           this.setState({
             activeQuestion: this.state.activeQuestion + 1,

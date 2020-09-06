@@ -1,10 +1,15 @@
 import React from 'react'
 import './AnswerItem.css'
 const AnswerItem = (props) => {
-  console.log(props.onAnswerClick)
+  const cls = ['AnswerItem', 'answeritem']
+
+  if (props.state) {
+    cls.push(props.state)
+  }
+
   return (
     <li
-      className='answeritem'
+      className={cls.join(' ')}
       onClick={() => props.onAnswerClick(props.answer.id)}
     >
       {props.answer.text}
@@ -13,9 +18,3 @@ const AnswerItem = (props) => {
 }
 
 export default AnswerItem
-
-// const cls = [classes.AnswerItem]
-
-// if (props.state) {
-//   cls.push(classes[props.state])
-// }

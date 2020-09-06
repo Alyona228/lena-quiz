@@ -3,7 +3,6 @@ import './ActiveQuize.css'
 import AnswersList from './AnswersList/AnswersList.js'
 
 const ActiveQuize = (props) => {
-  console.log(2, props.onAnswerClick)
   return (
     <div className='activequize'>
       <p className='question'>
