@@ -1,5 +1,5 @@
 import React from 'react'
-import { SUCCESS } from '../constants/constants'
+import { ERROR, SUCCESS } from '../constants/constants'
 import classes from './Finished.module.css'
 
 const Finished = (props) => {
@@ -10,14 +10,13 @@ const Finished = (props) => {
 
     return total
   }, 0)
-  console.log(successCount)
   return (
     <div className={classes.finished}>
       <ul>
         {props.quiz.map((quizItem, index) => {
           const cls = [
             'fa',
-            props.results[quizItem.id] === 'error' ? 'fa-times' : 'fa-check',
+            props.results[quizItem.id] === ERROR ? 'fa-times' : 'fa-check',
             classes[props.results[quizItem.id]],
           ]
           return (
