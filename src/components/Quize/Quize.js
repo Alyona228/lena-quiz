@@ -2,7 +2,7 @@ import React from 'react'
 import classes from './Quize.module.css'
 import ActiveQuize from '../../components/ActiveQuize/ActiveQuize'
 import Finished from '../../components/Finished.js'
-import { SUCCESS } from '../../constants/constants'
+import { ERROR, SUCCESS } from '../../constants/constants'
 class Quize extends React.Component {
   state = {
     results: {}, //  {[id]: success error}
@@ -14,7 +14,7 @@ class Quize extends React.Component {
       {
         question: 'Какого цвета небо?',
         rightAnswerId: 2,
-        id: 1,
+        id: 0,
         answers: [
           { text: 'Черный', id: 1 },
           { text: 'Синий', id: 2 },
@@ -25,7 +25,7 @@ class Quize extends React.Component {
       {
         question: 'В каком году основали Санкт-Петербург?',
         rightAnswerId: 3,
-        id: 2,
+        id: 1,
         answers: [
           { text: '1700', id: 1 },
           { text: '1702', id: 2 },
@@ -37,7 +37,7 @@ class Quize extends React.Component {
       {
         question: 'Когда всё началось?',
         rightAnswerId: 1,
-        id: 3,
+        id: 2,
         answers: [
           { text: '2017', id: 1 },
           { text: '2020', id: 2 },
@@ -48,7 +48,7 @@ class Quize extends React.Component {
       {
         question: 'Как меня зовут?',
         rightAnswerId: 4,
-        id: 4,
+        id: 3,
         answers: [
           { text: 'Алёна', id: 1 },
           { text: 'Миша', id: 2 },
@@ -59,7 +59,7 @@ class Quize extends React.Component {
       {
         question: 'Что такое xPON?',
         rightAnswerId: 2,
-        id: 1,
+        id: 4,
         answers: [
           { text: 'Fiber to the Building', id: 1 },
           { text: 'Passive optical network', id: 2 },
@@ -70,7 +70,7 @@ class Quize extends React.Component {
       {
         question: 'Диапазон покрытия сети xPON ?',
         rightAnswerId: 3,
-        id: 2,
+        id: 5,
         answers: [
           { text: '100 км', id: 1 },
           { text: '5 км', id: 2 },
@@ -81,7 +81,7 @@ class Quize extends React.Component {
       {
         question: 'Сколько абонентов можно подключить на один порт OLT ?',
         rightAnswerId: 1,
-        id: 2,
+        id: 6,
         answers: [
           { text: '64', id: 1 },
           { text: '48', id: 2 },
@@ -92,7 +92,7 @@ class Quize extends React.Component {
       {
         question: 'Какое затухание вносит сплиттер 1:4 ?',
         rightAnswerId: 4,
-        id: 2,
+        id: 7,
         answers: [
           { text: '2dB км', id: 1 },
           { text: '7Mb', id: 2 },
@@ -104,7 +104,7 @@ class Quize extends React.Component {
         question:
           'Что означает маркировка Патч-корд оптический SC/UPC – SC/UPC Simplex 5м?',
         rightAnswerId: 2,
-        id: 2,
+        id: 8,
         answers: [
           { text: 'Что у него в названии есть четыре буквы', id: 1 },
           {
@@ -120,43 +120,47 @@ class Quize extends React.Component {
   }
 
   onAnswerClickHandler = (answerId) => {
-    // if (this.state.answerState) {
-    //   const key = Object.keys(this.state.answerState)[0]
-    //   console.log(key)
-    //   if (this.state.answerState[key] === SUCCESS) {
-    //     return
-    //   }
-    // }
-    // const question = this.state.quiz[this.state.activeQuestion]
-    // const results = this.state.results
-    // if (question.rightAnswerId === answerId) {
-    //   if (!results[this.state.activeQuestion]) {
-    //     results[this.state.activeQuestion] = SUCCESS
-    //   }
-    //   this.setState({
-    //     answerState: { [answerId]: SUCCESS },
-    //     results,
-    //   })
-    //   const timeout = window.setTimeout(() => {
-    //     if (this.isQuizFinished()) {
-    //       this.setState({
-    //         isFinished: true,
-    //       })
-    //     } else {
-    //       this.setState({
-    //         activeQuestion: this.state.activeQuestion + 1,
-    //         answerState: null,
-    //       })
-    //     }
-    //     window.clearTimeout(timeout)
-    //   }, 1000)
-    // } else {
-    //   results[answerId] = 'error'
-    //   this.setState({
-    //     answerState: { [answerId]: 'error' },
-    //     results,
-    //   })
-    // }
+    if (this.state.answerState) {
+      const key = Object.keys(this.state.answerState)[0]
+      if (this.state.answerState[key] === SUCCESS) {
+        return
+      }
+    }
+    
+    const question = this.state.quiz[this.state.activeQuestion]
+    const results = this.state.results
+    if (question.rightAnswerId === answerId) {
+      if (!results[this.state.activeQuestion]) {
+        results[this.state.activeQuestion] = SUCCESS
+      }
+      this.setState({
+        answerState: { [answerId]: SUCCESS },
+        results,
+      })
+      setTimeout(() => {
+        if (this.isQuizFinished()) {
+          this.setState({
+            isFinished: true,
+          })
+        } else {
+          this.setState({
+            activeQuestion: this.state.activeQuestion + 1,
+            answerState: null,
+          })
+        }
+      }, 1000)
+    } else {
+      results[this.state.activeQuestion] = ERROR
+      this.setState({
+        answerState: { [answerId]: ERROR },
+        results,
+      })
+      setTimeout(() => {
+        this.setState({
+          answerState: null,
+        })
+      }, 1000)
+    }
   }
 
   isQuizFinished() {
